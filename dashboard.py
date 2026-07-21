@@ -1,6 +1,6 @@
 import streamlit as st
 
-st.set_page_config(page_title="Institutional Market Dashboard", layout="wide", initial_sidebar_state="expanded")
+st.set_page_config(page_title="Institutional Market Dashboard", layout="wide", initial_sidebar_state="auto")
 
 # Inject PWA Meta Tags
 st.markdown("""
