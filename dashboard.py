@@ -1,6 +1,13 @@
 import streamlit as st
+import extra_streamlit_components as stx
 
 st.set_page_config(page_title="Institutional Market Dashboard", layout="wide", initial_sidebar_state="auto")
+
+@st.cache_resource
+def get_cookie_manager():
+    return stx.CookieManager()
+
+cookie_manager = get_cookie_manager()
 
 # Inject PWA Meta Tags
 st.markdown("""
@@ -14,11 +21,13 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # Authentication Check
-if "authenticated" not in st.session_state:
+if cookie_manager.get("auth_token") == "authenticated":
+    st.session_state["authenticated"] = True
+elif "authenticated" not in st.session_state:
     st.session_state["authenticated"] = False
 
 def check_password():
-    if st.session_state["authenticated"]:
+    if st.session_state.get("authenticated", False):
         return True
         
     st.title("🔐 Authentication Required")
@@ -35,6 +44,7 @@ def check_password():
             
         if pwd_input == correct_password:
             st.session_state["authenticated"] = True
+            cookie_manager.set("auth_token", "authenticated", expires_at=None) # Persist indefinitely
             st.success("Access Granted!")
             st.rerun()
         else:
