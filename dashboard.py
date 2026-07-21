@@ -3,11 +3,7 @@ import extra_streamlit_components as stx
 
 st.set_page_config(page_title="Institutional Market Dashboard", layout="wide", initial_sidebar_state="auto")
 
-@st.cache_resource
-def get_cookie_manager():
-    return stx.CookieManager()
-
-cookie_manager = get_cookie_manager()
+cookie_manager = stx.CookieManager(key="auth_cookie_manager")
 
 # Inject PWA Meta Tags
 st.markdown("""
