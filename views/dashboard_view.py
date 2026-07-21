@@ -13,7 +13,41 @@ st.markdown("""
     .macro-red { color: #ff1744; font-weight: bold; }
     .macro-yellow { color: #ffea00; font-weight: bold; }
     .stAlert { margin-top: 10px; }
-    .fund-box { background-color: #1e222d; padding: 15px; border-radius: 8px; margin-top: 10px; color: #ffffff; }
+    .fund-box {
+        background-color: #1e1e1e;
+        padding: 15px;
+        border-radius: 5px;
+        margin-top: 10px;
+    }
+    
+    /* Mobile Layout Optimizations */
+    @media (max-width: 768px) {
+        .block-container {
+            padding-top: 0.5rem;
+            padding-left: 0.5rem;
+            padding-right: 0.5rem;
+        }
+        .fund-box {
+            padding: 10px;
+            font-size: 0.85em; /* Smaller text for dense mobile display */
+        }
+        h1 {
+            font-size: 1.5rem !important;
+        }
+        h2 {
+            font-size: 1.25rem !important;
+        }
+        h3 {
+            font-size: 1.1rem !important;
+        }
+        /* Make metric labels smaller on mobile */
+        [data-testid="stMetricLabel"] {
+            font-size: 0.8rem !important;
+        }
+        [data-testid="stMetricValue"] {
+            font-size: 1.2rem !important;
+        }
+    }
 </style>
 """, unsafe_allow_html=True)
 
@@ -166,13 +200,14 @@ def create_chart(data, ticker, timeframe):
     fig.add_trace(go.Scatter(x=plot_data_agg.index, y=sma_200w_plot, line=dict(color='#ff9800', width=2), name='200-Week SMA'))
     
     fig.update_layout(
-        title=f"{ticker} Long-Term Price Action & 200-Week SMA",
-        yaxis_title="Price (USD)",
         template="plotly_dark",
-        margin=dict(l=0, r=0, t=40, b=0),
-        height=450,
-        xaxis_rangeslider_visible=False,
-        legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1)
+        title=f"{ticker} Secular Trend",
+        xaxis_title="",
+        yaxis_title="Price",
+        height=350,  # Slightly shorter for mobile screens
+        margin=dict(l=10, r=10, t=40, b=10),
+        legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1), # Horizontal legend above chart avoids overlap
+        dragmode='pan' # Better for touch screens
     )
     return fig
 
